@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("NEON_POSTGRESS_POSTGRES_URL")
+  directUrl = env("NEON_POSTGRESS_POSTGRES_URL_NON_POOLING")
+}
+
+model Clients {
+  id         Int        @id @default(autoincrement())
+  name       String
+  phone      String
+  trainer    Trainers   @relation(fields: [trainersId], references: [id])
+  trainersId String
+  routines   Routines[]
+}
+
+model Trainers {
+  id       String  @id
+  name     String
+  phone    String
+  email    String
+  IsActive Boolean
+
+  clients  Clients[]
+  routines Routines[]
+  Exercise Exercises[]
+}
+
+model Routines {
+  id                 Int                  @id @default(autoincrement())
+  client             Clients              @relation(fields: [clientID], references: [id])
+  clientID           Int
+  trainer            Trainers             @relation(fields: [trainerID], references: [id])
+  trainerID          String
+  ExerciseRoutineMap ExerciseRoutineMap[]
+  createdAt          DateTime             @default(now())
+}
+
+model Exercises {
+  id          Int      @id @default(autoincrement())
+  name        String
+  trainer     Trainers @relation(fields: [trainerID], references: [id])
+  trainerID   String
+  iconLogoURL String
+  videoURL    String
+
+  bodyParts          BodyParts            @relation(fields: [bodyPartsID], references: [id])
+  bodyPartsID        Int
+  ExerciseRoutineMap ExerciseRoutineMap[]
+}
+
+model ExerciseRoutineMap {
+  id         Int       @id @default(autoincrement())
+  exercise   Exercises @relation(fields: [exerciseID], references: [id])
+  exerciseID Int
+  routines   Routines  @relation(fields: [routinesID], references: [id])
+  routinesID Int
+
+  day       Int
+  reps      Int
+  variation String
+  weidth    String
+}
+
+model BodyParts {
+  id       Int         @id @default(autoincrement())
+  name     String
+  Exercise Exercises[]
+}
