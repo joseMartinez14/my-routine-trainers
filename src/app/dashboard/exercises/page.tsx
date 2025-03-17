@@ -11,10 +11,10 @@ import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/di
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getNewerFirebaseToken } from '@/app/page';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
 import ExercisesTable, { Exercise } from './Components/exercises-table';
+import { getNewerFirebaseToken } from '@/utils/auth';
 
 
 

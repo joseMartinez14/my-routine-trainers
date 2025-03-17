@@ -8,11 +8,11 @@ import { useForm } from 'react-hook-form';
 import { AddRoutineExercise } from '../../type';
 import { Exercise, ExerciseRoutineMap } from '@/app/dashboard/exercises/type';
 import axios from 'axios';
-import { getNewerFirebaseToken } from '@/app/page';
 import Swal from 'sweetalert2';
 import DropdownInput from '@/app/components/DropdownInput';
 import TextInput from '@/app/components/TextInput';
 import RoutineTable from '../../Components/routine-table';
+import { getNewerFirebaseToken } from '@/utils/auth';
 
 
 const AddRoutine = () => {

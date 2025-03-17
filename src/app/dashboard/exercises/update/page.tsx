@@ -9,11 +9,11 @@ import { maxWidth } from '@mui/system';
 import axios, { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
-import { getNewerFirebaseToken } from '@/app/page';
 import { query } from 'firebase/firestore';
 import selectBpItem from '../Components/selectBpItem';
 import SelectBodyPartsItem from '../Components/selectBpItem';
 import { AddExerciseForm, Exercise } from '../type';
+import { getNewerFirebaseToken } from '@/utils/auth';
 
 interface bodyParts {
     id: number,

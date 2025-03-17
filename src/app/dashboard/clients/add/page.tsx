@@ -9,8 +9,8 @@ import { maxWidth } from '@mui/system';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
-import { getNewerFirebaseToken } from '@/app/page';
 import { AddClientForm } from '../type';
+import { getNewerFirebaseToken } from '@/utils/auth';
 
 
 const AddClient = () => {
