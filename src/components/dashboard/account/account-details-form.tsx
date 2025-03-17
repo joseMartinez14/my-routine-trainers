@@ -12,7 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
-import Grid from '@mui/material/Unstable_Grid2';
+import { Grid2 } from '@mui/material';
 
 const states = [
   { value: 'alabama', label: 'Alabama' },
@@ -32,32 +32,32 @@ export function AccountDetailsForm(): React.JSX.Element {
         <CardHeader subheader="The information can be edited" title="Profile" />
         <Divider />
         <CardContent>
-          <Grid container spacing={3}>
-            <Grid md={6} xs={12}>
+          <Grid2 container spacing={3}>
+            <Grid2  >
               <FormControl fullWidth required>
                 <InputLabel>First name</InputLabel>
                 <OutlinedInput defaultValue="Sofia" label="First name" name="firstName" />
               </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
+            </Grid2>
+            <Grid2  >
               <FormControl fullWidth required>
                 <InputLabel>Last name</InputLabel>
                 <OutlinedInput defaultValue="Rivers" label="Last name" name="lastName" />
               </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
+            </Grid2>
+            <Grid2  >
               <FormControl fullWidth required>
                 <InputLabel>Email address</InputLabel>
                 <OutlinedInput defaultValue="sofia@devias.io" label="Email address" name="email" />
               </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
+            </Grid2>
+            <Grid2  >
               <FormControl fullWidth>
                 <InputLabel>Phone number</InputLabel>
                 <OutlinedInput label="Phone number" name="phone" type="tel" />
               </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
+            </Grid2>
+            <Grid2  >
               <FormControl fullWidth>
                 <InputLabel>State</InputLabel>
                 <Select defaultValue="New York" label="State" name="state" variant="outlined">
@@ -68,14 +68,14 @@ export function AccountDetailsForm(): React.JSX.Element {
                   ))}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid md={6} xs={12}>
+            </Grid2>
+            <Grid2  >
               <FormControl fullWidth>
                 <InputLabel>City</InputLabel>
                 <OutlinedInput label="City" />
               </FormControl>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
