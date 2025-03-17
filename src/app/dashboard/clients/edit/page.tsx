@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useForm } from 'react-hook-form';
+import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import TextInput from '@/app/components/TextInput';
 import { maxWidth } from '@mui/system';
 import axios from 'axios';
@@ -13,7 +14,7 @@ import { getNewerFirebaseToken } from '@/app/page';
 import { AddClientForm } from '../type';
 
 
-const AddClient = () => {
+const EditClient = () => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -63,14 +64,25 @@ const AddClient = () => {
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                            <Typography variant="h4">Add client</Typography>
+                            <Typography variant="h4">{"<El nombre del cliente>"}</Typography>
                         </Stack>
                         <div>
-
-                            <Button onClick={() => { router.push("/dashboard/clients") }} startIcon={<ArrowBackIcon />} variant="contained">
+                            <Button
+                                onClick={() => { router.push(`/dashboard/clients/routine/add`) }}
+                                startIcon={<PlusIcon fontSize="var(--icon-fontSize-md)" />}
+                                variant="contained"
+                                sx={{ mx: 2 }}
+                            >
+                                Add routine
+                            </Button>
+                            <Button
+                                onClick={() => { router.push("/dashboard/clients") }}
+                                startIcon={<ArrowBackIcon />}
+                                variant="contained"
+                                sx={{ mx: 2 }}
+                            >
                                 Back
                             </Button>
-
                         </div>
                     </Stack>
                     <Card sx={{ p: 2 }}>
@@ -93,4 +105,4 @@ const AddClient = () => {
     )
 }
 
-export default AddClient
+export default EditClient

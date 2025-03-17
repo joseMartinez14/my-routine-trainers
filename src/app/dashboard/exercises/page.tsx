@@ -8,28 +8,29 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { Card, InputAdornment, OutlinedInput } from '@mui/material';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
-import ClientsTable, { Client } from './Components/clients-table';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getNewerFirebaseToken } from '@/app/page';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
+import ExercisesTable, { Exercise } from './Components/exercises-table';
 
 
 
 
-const Clients = () => {
+const Exercices = () => {
 
     const router = useRouter();
-    const [clientsRows, setClientsRows] = useState<Client[]>([])
-    const [filteredClients, setfilteredClients] = useState<Client[]>([])
+    const [exerciseRows, setExercisesRows] = useState<Exercise[]>([])
+    const [filteredExercises, setfilteredExercises] = useState<Exercise[]>([])
     const [loading, setLoading] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
-    const [selectedRows, setSelectedRows] = useState<Client[]>([]);
+
+    const [selectedRows, setSelectedRows] = useState<Exercise[]>([]);
 
 
-    const addSelectedRow = (row: Client) => {
+    const addSelectedRow = (row: Exercise) => {
         setSelectedRows((prev) => [...prev, row]);
     };
 
@@ -37,18 +38,18 @@ const Clients = () => {
         setSelectedRows((prev) => prev.filter((row) => row.id !== id));
     };
 
-    const queryClients = async () => {
+    const queryExercises = async () => {
         setLoading(true);
 
         const token = await getNewerFirebaseToken();
-        await axios.get("/api/clients", {
+        await axios.get("/api/exercises", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((res) => {
-                setClientsRows(res.data)
-                setfilteredClients(res.data)
+                setExercisesRows(res.data)
+                setfilteredExercises(res.data)
 
             })
             .catch((error => {
@@ -67,16 +68,14 @@ const Clients = () => {
     }
 
     const onSearchClick = () => {
-        console.log("Pichhaaa")
-        const filteredClients = clientsRows.filter(client =>
-            client.name.toLowerCase().includes(search.toLowerCase()) ||
-            client.phone.includes(search) // Optionally filter by phone number as well
+        const filteredExercises = exerciseRows.filter(exercise =>
+            exercise.name.toLowerCase().includes(search.toLowerCase())
         );
-        setfilteredClients(filteredClients)
+        setfilteredExercises(filteredExercises)
     }
 
     useEffect(() => {
-        queryClients();
+        queryExercises();
     }, [])
 
     const page = 0;
@@ -87,7 +86,7 @@ const Clients = () => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">Clients</Typography>
+                        <Typography variant="h4">Exercises</Typography>
                     </Stack>
                     <div>
                         <Button
@@ -100,7 +99,7 @@ const Clients = () => {
                             Remove
                         </Button>
                         <Button
-                            onClick={() => { router.push(`${window.location.pathname}/edit?id=${selectedRows[0].id}`) }}
+                            onClick={() => { router.push(`${window.location.pathname}/update?id=${selectedRows[0].id}`) }}
                             startIcon={<EditNoteOutlinedIcon />}
                             variant="contained"
                             disabled={!(selectedRows.length == 1)}
@@ -117,6 +116,8 @@ const Clients = () => {
                         >
                             Add
                         </Button>
+
+
                     </div>
                 </Stack>
                 <Card sx={{ p: 2 }}>
@@ -124,7 +125,7 @@ const Clients = () => {
                         <OutlinedInput
                             defaultValue=""
                             fullWidth
-                            placeholder="Search Clients"
+                            placeholder="Search Exercises"
                             onChange={onSearchChange}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -139,10 +140,10 @@ const Clients = () => {
                     </Stack>
 
                 </Card>
-                <ClientsTable
-                    count={filteredClients.length}
+                <ExercisesTable
+                    count={exerciseRows.length}
                     page={page}
-                    rows={filteredClients}
+                    rows={filteredExercises}
                     rowsPerPage={rowsPerPage}
                     selectedRows={selectedRows}
                     addSelectedRow={addSelectedRow}
@@ -155,4 +156,4 @@ const Clients = () => {
 
 }
 
-export default Clients
+export default Exercices

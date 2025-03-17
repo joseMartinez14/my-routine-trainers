@@ -2,10 +2,6 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid'; // Import the UUID module
 
 export const uploadFileToS3 = async (file: File, user_id: string) => {
-  console.log(process.env.AWS_REGION);
-  console.log(process.env.AWS_ACCESS_ID);
-  console.log(process.env.AWS_ACCESS_SECRET_KEY);
-
   const s3Client = new S3Client({
     region: process.env.AWS_REGION!,
     credentials: {
@@ -29,7 +25,7 @@ export const uploadFileToS3 = async (file: File, user_id: string) => {
   });
 
   const result = await s3Client.send(command);
-  console.log('S3 response ', result);
+  // console.log('S3 response ', result);
   return url;
 };
 

@@ -4,14 +4,21 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("NEON_POSTGRESS_POSTGRES_URL")
-  directUrl = env("NEON_POSTGRESS_POSTGRES_URL_NON_POOLING")
+  url       = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Clients {
-  id         Int        @id @default(autoincrement())
-  name       String
-  phone      String
+  id                 Int     @id @default(autoincrement())
+  name               String
+  phone              String
+  anatomy            String?
+  injuries           String?
+  objective          String?
+  experience         String?
+  weeklyTrainingDays Int
+  trainingMinutes    Int
+
   trainer    Trainers   @relation(fields: [trainersId], references: [id])
   trainersId String
   routines   Routines[]
@@ -23,6 +30,9 @@ model Trainers {
   phone    String
   email    String
   IsActive Boolean
+
+  //Image
+  //Description
 
   clients  Clients[]
   routines Routines[]
@@ -37,6 +47,7 @@ model Routines {
   trainerID          String
   ExerciseRoutineMap ExerciseRoutineMap[]
   createdAt          DateTime             @default(now())
+  name               String?
 }
 
 model Exercises {
@@ -44,29 +55,36 @@ model Exercises {
   name        String
   trainer     Trainers @relation(fields: [trainerID], references: [id])
   trainerID   String
-  iconLogoURL String
-  videoURL    String
+  iconLogoURL String?
+  videoURL    String?
 
-  bodyParts          BodyParts            @relation(fields: [bodyPartsID], references: [id])
-  bodyPartsID        Int
-  ExerciseRoutineMap ExerciseRoutineMap[]
+  ExerciseRoutineMap   ExerciseRoutineMap[]
+  ExerciseBodyPartsMap ExerciseBodyPartsMap[]
 }
 
 model ExerciseRoutineMap {
   id         Int       @id @default(autoincrement())
   exercise   Exercises @relation(fields: [exerciseID], references: [id])
   exerciseID Int
-  routines   Routines  @relation(fields: [routinesID], references: [id])
+  routine    Routines  @relation(fields: [routinesID], references: [id])
   routinesID Int
 
   day       Int
-  reps      Int
-  variation String
-  weidth    String
+  reps      String
+  variation String?
+  weight    String?
+}
+
+model ExerciseBodyPartsMap {
+  id         Int       @id @default(autoincrement())
+  exercise   Exercises @relation(fields: [exerciseID], references: [id])
+  exerciseID Int
+  bodyPart   BodyParts @relation(fields: [bodyPartID], references: [id])
+  bodyPartID Int
 }
 
 model BodyParts {
-  id       Int         @id @default(autoincrement())
-  name     String
-  Exercise Exercises[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  ExerciseBodyPartsMap ExerciseBodyPartsMap[]
 }

@@ -1,36 +1,33 @@
 'use client';
-import { Box, Card, Checkbox, Divider, Stack, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react'
+import { Avatar, Box, Card, Checkbox, Divider, Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from '@mui/material';
+import React, { useMemo, useState } from 'react'
 
-function noop(): void {
-    // do nothing
-}
-
-export interface Client {
+export interface Exercise {
     id: string;
     name: string;
-    phone: string;
-    anatomy?: string;
-    injuries?: string;
-    objective?: string;
-    experience?: string;
-    weeklyTrainingDays: number;
-    trainingMinutes: number;
+    iconLogoURL: string;
+    videoURL: string;
 }
 
-interface ClientsTableProps {
+interface ExercisesTableProps {
     count: number;
     page: number;
-    rows: Client[];
+    rows: Exercise[];
     rowsPerPage: number;
-    selectedRows: Client[]
-    addSelectedRow: (row: Client) => void
+    selectedRows: Exercise[]
+    addSelectedRow: (row: Exercise) => void
     removeSelectedRow: (id: string) => void
 }
 
-const ClientsTable = (props: ClientsTableProps) => {
+const ExercisesTable = (props: ExercisesTableProps) => {
 
     const { count, page, rows, rowsPerPage, selectedRows, addSelectedRow, removeSelectedRow } = props;
+
+
+    const isRowSelected = (id: string) => {
+        return selectedRows.some((row) => row.id === id);
+    };
+
 
     const [actualPage, setPage] = useState<number>(page);
     const [actualRowsPerPage, setRowsPerPage] = useState<number>(rowsPerPage);
@@ -39,16 +36,12 @@ const ClientsTable = (props: ClientsTableProps) => {
         setPage(newPage);
     };
 
-    const isRowSelected = (id: string) => {
-        return selectedRows.some((row) => row.id === id);
-    };
-
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0); // Reset to first page when rows per page changes
     };
 
-    const page_rows = useMemo<Client[]>(() => {
+    const page_rows = useMemo<Exercise[]>(() => {
         return rows.slice(actualPage * actualRowsPerPage, actualPage * actualRowsPerPage + actualRowsPerPage);
 
     }, [actualPage, actualRowsPerPage, rows])
@@ -62,9 +55,8 @@ const ClientsTable = (props: ClientsTableProps) => {
                         <TableRow>
                             <TableCell>Select</TableCell>
                             <TableCell>Name</TableCell>
-                            <TableCell>Phone</TableCell>
-                            <TableCell>anatomy</TableCell>
-                            <TableCell>objective</TableCell>
+                            <TableCell>Icon</TableCell>
+                            <TableCell>Video</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -74,6 +66,7 @@ const ClientsTable = (props: ClientsTableProps) => {
                             const isSelected = isRowSelected(row.id);
 
                             return (
+                                // <div onClick={() => {/* aqui deberia poner este id como el seleccionado y de ahi habilitar el delete y edit */ }}>
                                 <TableRow hover key={row.id} >
                                     <TableCell padding="checkbox">
                                         <Checkbox
@@ -88,17 +81,23 @@ const ClientsTable = (props: ClientsTableProps) => {
                                         />
                                     </TableCell>
                                     <TableCell> {row.name} </TableCell>
-                                    <TableCell>{row.phone}</TableCell>
                                     <TableCell>
-                                        {row.anatomy}
+                                        <Avatar
+                                            src={row.iconLogoURL || ""}
+                                            alt="Preview"
+                                            sx={{ width: 150, height: 150 }}
+                                        />
                                     </TableCell>
-                                    <TableCell>{row.objective}</TableCell>
+                                    <TableCell>
+                                        <video controls width="200">
+                                            <source src={row.videoURL} type={`video/${row.videoURL.split('.').pop()?.toLowerCase()}`} />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </TableCell>
                                 </TableRow>
+                                // </div>
                             );
                         })}
-                        <TableRow >
-                            <TableCell colSpan={5} align="center" >Phone</TableCell>
-                        </TableRow>
                     </TableBody>
                 </Table>
             </Box>
@@ -116,4 +115,4 @@ const ClientsTable = (props: ClientsTableProps) => {
     );
 }
 
-export default ClientsTable
+export default ExercisesTable

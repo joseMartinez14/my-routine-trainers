@@ -11,17 +11,16 @@ export async function findOrCreateuser(req: Request) {
   //Buscar en la db ese uudi
 
   const existing = await prisma.trainers.findUnique({
-    where: { id: Number(data.uuid) },
+    where: { id: data.uuid },
   });
 
   //Si si funciona lo devuelvo de una
-
   //Si no lo creo y lo mando
 
   if (existing) {
     return Response.json(existing);
   } else {
-    return await prisma.trainers.create({
+    const new_user = await prisma.trainers.create({
       data: {
         id: data.uuid,
         name: data.name,
@@ -30,5 +29,7 @@ export async function findOrCreateuser(req: Request) {
         IsActive: false,
       },
     });
+
+    return Response.json(new_user);
   }
 }
