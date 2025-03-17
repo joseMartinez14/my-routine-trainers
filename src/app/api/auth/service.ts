@@ -1,5 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import { prisma } from '@/lib/prisma';
 
 export async function findOrCreateuser(req: Request) {

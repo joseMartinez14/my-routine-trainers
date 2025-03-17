@@ -1,8 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import { findOrCreateuser } from './service';
 
-export async function POST(req: Request, res: NextApiResponse) {
+export async function POST(req: Request) {
   try {
     return await findOrCreateuser(req);
   } catch (error: any) {
