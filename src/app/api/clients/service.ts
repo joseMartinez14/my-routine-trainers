@@ -1,4 +1,4 @@
-import { AddClientForm } from '@/app/dashboard/clients/add/type';
+import { AddClientForm } from '@/app/dashboard/clients/type';
 import { CommentSharp } from '@mui/icons-material';
 
 import { prisma } from '@/lib/prisma';
