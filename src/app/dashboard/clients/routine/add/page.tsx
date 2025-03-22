@@ -2,26 +2,28 @@
 import LoadingModal from '@/app/components/LoadingModal'
 import { Autocomplete, Box, Button, Card, Stack, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { AddRoutineExercise } from '../../type';
+import { AddRoutineExercise, Client } from '../../type';
 import { Exercise, ExerciseRoutineMap } from '@/app/dashboard/exercises/type';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import DropdownInput from '@/app/components/DropdownInput';
 import TextInput from '@/app/components/TextInput';
-import RoutineTable from '../../Components/routine-table';
 import { getNewerFirebaseToken } from '@/utils/auth';
+import RoutineExercisesTable from '../../Components/routine-exercises-table';
 
 
 const AddRoutine = () => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [routineName, setRoutineName] = useState<string>("");
+    const [client, setClient] = useState<Client | null>(null);
     const [exerciseList, setExerciseList] = useState<Exercise[]>([])
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [exerciseRoutineList, setExerciseRoutineList] = useState<ExerciseRoutineMap[]>([])
+    const searchParams = useSearchParams();
 
     //==================================
     //Exercise section
@@ -50,12 +52,31 @@ const AddRoutine = () => {
         setLoading(false);
     }
 
+    const queryClient = async (id: string) => {
+        setLoading(true);
+
+        const token = await getNewerFirebaseToken();
+        await axios.get(`/api/clients/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                const data: Client = res.data;
+                setClient(data);
+            })
+            .catch((error => {
+                console.error(error)
+                Swal.fire({
+                    title: "Error",
+                    text: `Message: ${error}`,
+                    icon: "error"
+                });
+            }))
+        setLoading(false);
+    }
+
     const onSubmit = (data: AddRoutineExercise) => {
-        console.log("-----------")
-        console.log("-----------")
-        console.log(data)
-        console.log("-----------")
-        console.log(selectedExercise)
         if (selectedExercise) {
             console.log('*******')
             setExerciseRoutineList([
@@ -88,9 +109,47 @@ const AddRoutine = () => {
         setValue
     } = useForm<AddRoutineExercise>();
 
+    const onRoutineSubmit = async () => {
+
+        const token = await getNewerFirebaseToken();
+
+        const data = {
+            client_id: client?.id,
+            routine_name: routineName,
+            exerciseRoutineMap: exerciseRoutineList
+        }
+        await axios.post(`/api/routines/`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                const data = res.data;
+
+                console.log("---- Response from save routine ------")
+                console.log(data)
+            })
+            .catch((error => {
+                console.error(error)
+                Swal.fire({
+                    title: "Error",
+                    text: `Message: ${error}`,
+                    icon: "error"
+                });
+            }))
+
+
+    }
+
 
     useEffect(() => {
-        queryExercises();
+
+        const client_id = searchParams.get('client_id');
+        if (!client_id) router.push("/dashboard/clients");
+        else {
+            queryExercises();
+            queryClient(client_id);
+        }
     }, [])
 
     const page = 0;
@@ -102,11 +161,11 @@ const AddRoutine = () => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">{"Add routine for <Client name>"}</Typography>
+                        <Typography variant="h4">{`Add routine for ${client?.name}`}</Typography>
                     </Stack>
                     <div>
                         <Button
-                            onClick={() => { router.push(`${window.location.pathname}/add`) }}
+                            onClick={() => { router.push(`/dashboard/clients`) }}
                             startIcon={<ArrowBackIcon />}
                             variant="contained"
                             sx={{ mx: 2 }}
@@ -230,7 +289,7 @@ const AddRoutine = () => {
                         </Button>
                     </Card>
                 </Box>
-                <RoutineTable
+                <RoutineExercisesTable
                     title='Routine exercises'
                     count={exerciseRoutineList.length}
                     page={page}
@@ -238,6 +297,9 @@ const AddRoutine = () => {
                     rowsPerPage={rowsPerPage}
                     removeSelectedRow={removeSelectedRow}
                 />
+                <Button onClick={onRoutineSubmit} variant="contained" sx={{ maxWidth: '200px', my: 2 }}>
+                    Submit routine
+                </Button>
             </Stack>
         </>
     )

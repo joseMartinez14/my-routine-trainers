@@ -9,6 +9,19 @@ export type AddClientForm = {
   trainingMinutes: number;
 };
 
+export type Client = {
+  id: number;
+  name: string;
+  phone: string;
+  anatomy: string?;
+  injuries: string?;
+  objective: string?;
+  experience: string?;
+  weeklyTrainingDays: number;
+  trainingMinutes: number;
+};
+
+
 export type AddRoutineExercise = {
   name: string?;
   exerciseID: number;

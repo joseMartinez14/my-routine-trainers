@@ -96,9 +96,6 @@ const ClientsTable = (props: ClientsTableProps) => {
                                 </TableRow>
                             );
                         })}
-                        <TableRow >
-                            <TableCell colSpan={5} align="center" >Phone</TableCell>
-                        </TableRow>
                     </TableBody>
                 </Table>
             </Box>

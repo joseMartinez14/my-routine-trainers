@@ -129,9 +129,9 @@ const UpdateExercise = () => {
 
         if (!continue_query) return
 
-        setLoading(true);
         const exercise_id = searchParams.get('id');
         if (!exercise_id) router.push("/dashboard/exercises")
+        setLoading(true);
         const formData = new FormData();
         formData.append("name", data.name)
         formData.append("id", exercise_id || '-1')

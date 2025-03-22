@@ -9,7 +9,7 @@ function noop(): void {
 }
 
 
-interface RoutineTableProps {
+interface RoutineExercisesTableProps {
     title: string;
     count: number;
     page: number;
@@ -18,7 +18,7 @@ interface RoutineTableProps {
     removeSelectedRow: (id: number) => void
 }
 
-const RoutineTable = (props: RoutineTableProps) => {
+const RoutineExercisesTable = (props: RoutineExercisesTableProps) => {
 
     const { title, count, page, rows, rowsPerPage, removeSelectedRow } = props;
 
@@ -125,4 +125,4 @@ const RoutineTable = (props: RoutineTableProps) => {
     );
 }
 
-export default RoutineTable
+export default RoutineExercisesTable
