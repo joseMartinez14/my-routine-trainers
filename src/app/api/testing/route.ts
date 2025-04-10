@@ -2,31 +2,44 @@ import { NextResponse } from 'next/server';
 import { uploadFileToS3 } from '@/utils/aws-s3';
 import { IncomingForm } from 'formidable';
 
-export async function POST(req: Request) {
-  console.log('On API testing post');
-  //   const { files, fields } = await parseFormData(req);
+import { get_trainer_routines } from '../routines/service';
 
-  const data = await req.formData();
-  console.log(data);
-  console.log(typeof data.get('param1'));
-  console.log(typeof data.get('some_image'));
-
-  // Access file
-  const file = data.get('some_image') as File;
-
-  if (file) {
-    console.log('Uploaded file:', file.name, file.size, file.type);
-    console.log('  -    ');
-    console.log('  -    ');
-
-    uploadFileToS3(file, 'fake_user');
-
-    console.log('  -    ');
-    console.log('  -    ');
+export async function GET(req: Request) {
+  try {
+    const datos = await get_trainer_routines('mS7BtbrUOVSCD4OzI9KtqkXQmb03');
+    return Response.json(datos);
+  } catch (error: any) {
+    return Response.json({ error: error }, { status: 500 });
   }
-
-  return Response.json({ testing: 'Some shit' });
 }
+
+//mS7BtbrUOVSCD4OzI9KtqkXQmb03
+
+// export async function POST(req: Request) {
+//   console.log('On API testing post');
+//   //   const { files, fields } = await parseFormData(req);
+
+//   const data = await req.formData();
+//   console.log(data);
+//   console.log(typeof data.get('param1'));
+//   console.log(typeof data.get('some_image'));
+
+//   // Access file
+//   const file = data.get('some_image') as File;
+
+//   if (file) {
+//     console.log('Uploaded file:', file.name, file.size, file.type);
+//     console.log('  -    ');
+//     console.log('  -    ');
+
+//     uploadFileToS3(file, 'fake_user');
+
+//     console.log('  -    ');
+//     console.log('  -    ');
+//   }
+
+//   return Response.json({ testing: 'Some shit' });
+// }
 
 // // Helper function to parse form data
 // async function parseFormData(req: Request): Promise<{

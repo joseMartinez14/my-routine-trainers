@@ -5,6 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useForm } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import TextInput from '@/app/components/TextInput';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -21,6 +22,12 @@ const EditClient = () => {
     const [clientID, setClientID] = useState<string | null>(null);
     const [routines, setRoutines] = useState<ClientRoutineStat[]>([]);
     const searchParams = useSearchParams();
+
+    const [selectedRow, setSelectedRow] = useState<ClientRoutineStat | undefined>(undefined);
+
+    const toggleSelected = (row: ClientRoutineStat) => {
+        setSelectedRow(row)
+    }
 
     const {
         control,
@@ -46,7 +53,7 @@ const EditClient = () => {
         setLoading(true);
 
         const token = await getNewerFirebaseToken();
-        await axios.get(`/api/routines/${id}`, {
+        await axios.get(`/api/clientRoutine/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -175,6 +182,15 @@ const EditClient = () => {
                                 Add routine
                             </Button>
                             <Button
+                                onClick={() => { router.push(`/dashboard/routines/edit?routine_id=${selectedRow?.routine_id}`) }}
+                                startIcon={<EditNoteOutlinedIcon />}
+                                variant="contained"
+                                disabled={!selectedRow}
+                                sx={{ mx: 2 }}
+                            >
+                                Edit routine
+                            </Button>
+                            <Button
                                 onClick={() => { router.push("/dashboard/clients") }}
                                 startIcon={<ArrowBackIcon />}
                                 variant="contained"
@@ -191,6 +207,8 @@ const EditClient = () => {
                         page={page}
                         rows={routines}
                         rowsPerPage={rowsPerPage}
+                        selectedRow={selectedRow}
+                        toggle={toggleSelected}
                     />
 
                     <Card sx={{ p: 2 }}>

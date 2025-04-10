@@ -5,16 +5,17 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { AddRoutineExercise, Client } from '../../type';
-import { Exercise, ExerciseRoutineMap } from '@/app/dashboard/exercises/type';
+import { AddRoutineExercise, Client } from '../../clients/type';
+import { Exercise, ExerciseRoutineMap, Routine } from '@/app/dashboard/exercises/type';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import DropdownInput from '@/app/components/DropdownInput';
 import TextInput from '@/app/components/TextInput';
 import { getNewerFirebaseToken } from '@/utils/auth';
-import RoutineExercisesTable from '../../Components/routine-exercises-table';
+import RoutineExercisesTable from '../../clients/Components/routine-exercises-table';
 
-const AddRoutine = () => {
+
+const EditRoutine = () => {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [routineName, setRoutineName] = useState<string>("");
@@ -26,9 +27,6 @@ const AddRoutine = () => {
     const [idCount, setIdCount] = useState<number>(0);
     const searchParams = useSearchParams();
 
-    //==================================
-    //Exercise section
-    //==================================
 
     const sortExercises = (obj: ExerciseRoutineMap) => {
         console.log('---')
@@ -36,6 +34,10 @@ const AddRoutine = () => {
         const data = [...exerciseRoutineList, obj]
         setExerciseRoutineList(data.sort((a, b) => a.day - b.day));
     }
+
+    //==================================
+    //Exercise section
+    //==================================
 
     const queryExercises = async () => {
         setLoading(true);
@@ -60,18 +62,22 @@ const AddRoutine = () => {
         setLoading(false);
     }
 
-    const queryClient = async (id: string) => {
+    const queryRoutine = async (id: string) => {
         setLoading(true);
 
         const token = await getNewerFirebaseToken();
-        await axios.get(`/api/clients/${id}`, {
+
+        await axios.get(`/api/routines/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((res) => {
-                const data: Client = res.data;
-                setClient(data);
+                const data: Routine = res.data;
+                setClient(data.client);
+                setExerciseRoutineList([...exerciseRoutineList, ...data.ExerciseRoutineMap.sort((a, b) => a.day - b.day)])
+                if (data.name) setRoutineName(data.name)
+                if (data.comment) setRoutineComment(data.comment)
             })
             .catch((error => {
                 console.error(error)
@@ -84,7 +90,7 @@ const AddRoutine = () => {
         setLoading(false);
     }
 
-    const onSubmit = async (data: AddRoutineExercise) => {
+    const onSubmit = (data: AddRoutineExercise) => {
         if (selectedExercise) {
             setSelectedExercise(null)
             sortExercises({
@@ -98,6 +104,7 @@ const AddRoutine = () => {
                 exercise: selectedExercise
             });
             setIdCount(idCount + 1)
+
         }
     }
 
@@ -114,21 +121,26 @@ const AddRoutine = () => {
     } = useForm<AddRoutineExercise>();
 
     const onRoutineSubmit = async () => {
+        setLoading(true)
 
         const token = await getNewerFirebaseToken();
+        const routine_id = searchParams.get('routine_id');
+        if (!routine_id) router.push("/dashboard/clients");
 
         const data = {
-            client_id: client?.id,
+            routine_id: routine_id,
             routine_name: routineName,
             routine_comment: routineComment,
             exerciseRoutineMap: exerciseRoutineList
         }
-        await axios.post(`/api/routines/`, data, {
+
+        await axios.put(`/api/routines/${routine_id}`, data, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((res) => {
+                setLoading(false)
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -138,6 +150,7 @@ const AddRoutine = () => {
                 });
             })
             .catch((error => {
+                setLoading(false)
                 console.error(error)
                 Swal.fire({
                     title: "Error",
@@ -152,11 +165,11 @@ const AddRoutine = () => {
 
     useEffect(() => {
 
-        const client_id = searchParams.get('client_id');
-        if (!client_id) router.push("/dashboard/clients");
+        const routine_id = searchParams.get('routine_id');
+        if (!routine_id) router.push("/dashboard/clients");
         else {
             queryExercises();
-            queryClient(client_id);
+            queryRoutine(routine_id);
         }
     }, [])
 
@@ -194,7 +207,7 @@ const AddRoutine = () => {
                                     padding: 0,
                                     fontWeight: 500,
                                 }}>
-                                {"Name?:"}
+                                {"Routine name:"}
                             </Typography>
                             <TextField
                                 sx={{
@@ -343,7 +356,7 @@ const AddRoutine = () => {
     )
 }
 
-export default AddRoutine
+export default EditRoutine
 
 
 const daysData = [

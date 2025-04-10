@@ -30,6 +30,8 @@ model Trainers {
   phone    String
   email    String
   IsActive Boolean
+  photoURL String?
+  aboutMe  String?
 
   //Image
   //Description
@@ -48,6 +50,7 @@ model Routines {
   ExerciseRoutineMap ExerciseRoutineMap[]
   createdAt          DateTime             @default(now())
   name               String?
+  comment            String?
 }
 
 model Exercises {
@@ -64,9 +67,9 @@ model Exercises {
 
 model ExerciseRoutineMap {
   id         Int       @id @default(autoincrement())
-  exercise   Exercises @relation(fields: [exerciseID], references: [id])
+  exercise   Exercises @relation(fields: [exerciseID], references: [id], onDelete: Cascade)
   exerciseID Int
-  routine    Routines  @relation(fields: [routinesID], references: [id])
+  routine    Routines  @relation(fields: [routinesID], references: [id], onDelete: Cascade)
   routinesID Int
 
   day       Int

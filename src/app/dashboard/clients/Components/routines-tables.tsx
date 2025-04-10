@@ -1,5 +1,5 @@
 'use client';
-import { Box, Card, Divider, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Card, Divider, Radio, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import React, { useMemo, useState } from 'react'
 import { ClientRoutineStat } from '@/app/api/routines/type';
 
@@ -22,11 +22,13 @@ interface RoutinesTableProps {
     page: number;
     rows: ClientRoutineStat[];
     rowsPerPage: number;
+    selectedRow: ClientRoutineStat | undefined;
+    toggle: (row: ClientRoutineStat) => void
 }
 
 const RoutinesTable = (props: RoutinesTableProps) => {
 
-    const { title, count, page, rows, rowsPerPage } = props;
+    const { title, count, page, rows, rowsPerPage, selectedRow, toggle } = props;
 
     const [actualPage, setPage] = useState<number>(page);
     const [actualRowsPerPage, setRowsPerPage] = useState<number>(rowsPerPage);
@@ -64,15 +66,22 @@ const RoutinesTable = (props: RoutinesTableProps) => {
                 <Table sx={{ minWidth: '800px' }}>
                     <TableHead>
                         <TableRow>
+                            <TableCell>Select</TableCell>
                             <TableCell>Created at</TableCell>
                             <TableCell>Routine name</TableCell>
-                            <TableCell>Days amount</TableCell>
+                            <TableCell>Training weekly days</TableCell>
                             <TableCell>Avg day exercises</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
                             <TableRow hover key={row.routine_id} >
+                                <TableCell padding="checkbox">
+                                    <Radio
+                                        checked={(selectedRow && row.routine_id == selectedRow.routine_id) ? true : false}
+                                        onChange={() => { toggle(row) }}
+                                    />
+                                </TableCell>
                                 <TableCell> {formatDateBeautify(row.routine_created_time)} </TableCell>
                                 <TableCell> {row.routine_name} </TableCell>
                                 <TableCell>{row.day_amount}</TableCell>

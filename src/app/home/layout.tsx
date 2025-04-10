@@ -17,6 +17,21 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
   return (
     <html lang="en">
       <body>
+        <Box
+          minHeight={"100dvh"}
+          sx={{
+
+            width: '100%',
+            backgroundImage: {
+              xs: `url(/assets/fitness_background_v.png)`,
+              md: `url(/assets/fitness_background_h.png)`
+            },
+            backgroundRepeat: "no-repeat",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.5,
+          }}>
+        </Box>
         <ThemeProvider >{children}</ThemeProvider>
       </body>
     </html>

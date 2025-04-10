@@ -1,4 +1,5 @@
 import { number } from "zod";
+import { Client } from "../clients/type";
 
 export type AddExerciseForm = {
   name: string;
@@ -41,11 +42,13 @@ export type ExerciseRoutineMap = {
   exercise: Exercise;
 }
 
-export type Rotine = {
+export type Routine = {
   id: number;
   name: string?;
+  comment: string?;
   ExerciseRoutineMap: ExerciseRoutineMap[];
   createdAt: Date;
+  client: Client;
 }
 
 

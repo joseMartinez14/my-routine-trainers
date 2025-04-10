@@ -90,7 +90,7 @@ const ExercisesTable = (props: ExercisesTableProps) => {
                                     </TableCell>
                                     <TableCell>
                                         <video controls width="200">
-                                            <source src={row.videoURL} type={`video/${row.videoURL.split('.').pop()?.toLowerCase()}`} />
+                                            <source src={row.videoURL} type={`video/${row.videoURL?.split('.').pop()?.toLowerCase()}`} />
                                             Your browser does not support the video tag.
                                         </video>
                                     </TableCell>

@@ -212,7 +212,7 @@ const UpdateExercise = () => {
                 const data: Exercise = res.data;
                 setImagePreview(data.iconLogoURL)
                 setVideoPreview(data.videoURL)
-                setVideoPreviewType(`video/${data.videoURL.split('.').pop()?.toLowerCase()}`)
+                setVideoPreviewType(`video/${data.videoURL?.split('.').pop()?.toLowerCase()}`)
                 setValue("name", data.name)
                 const bds = data.ExerciseBodyPartsMap.map((item) => {
                     return { id: item.bodyPart.id, name: item.bodyPart.name }

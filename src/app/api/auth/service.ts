@@ -18,13 +18,15 @@ export async function findOrCreateuser(req: Request) {
   if (existing) {
     return Response.json(existing);
   } else {
+    console.log('---------');
     const new_user = await prisma.trainers.create({
       data: {
         id: data.uuid,
-        name: data.name,
+        name: data.name || '',
         phone: '',
         email: data.email,
         IsActive: false,
+        photoURL: '',
       },
     });
 

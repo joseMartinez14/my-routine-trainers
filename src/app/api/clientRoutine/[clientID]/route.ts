@@ -1,4 +1,4 @@
-import { get_client_routines } from '../service';
+import { get_client_routines } from '../../routines/service';
 
 export async function GET(request: Request, { params }: { params: { clientID: string } }) {
   try {
