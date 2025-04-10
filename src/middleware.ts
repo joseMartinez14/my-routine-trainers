@@ -26,7 +26,13 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/clients/:path*', '/api/exercises/:path*', '/api/routines/:path*', '/api/profile/:path*'],
+  matcher: [
+    '/api/clients/:path*',
+    '/api/exercises/:path*',
+    '/api/routines/:path*',
+    '/api/profile/:path*',
+    '/api/overview/:path*',
+  ],
 };
 
 async function getUserFromToken(idToken: string) {

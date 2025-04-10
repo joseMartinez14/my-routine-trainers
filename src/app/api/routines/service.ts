@@ -92,7 +92,7 @@ export const create_new_routine = async (
   }
 };
 
-export const get_trainer_routines = async (trainer_uid: string) => {
+export const get_trainer_routines = async (trainer_uid: string): Promise<RoutinesStat[]> => {
   try {
     const latestRoutinesData = await prisma.routines.groupBy({
       by: ['clientID'],
@@ -119,6 +119,9 @@ export const get_trainer_routines = async (trainer_uid: string) => {
         client: true,
         ExerciseRoutineMap: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     //I need to take the details here.
@@ -144,7 +147,7 @@ export const get_trainer_routines = async (trainer_uid: string) => {
         routine_created_time: routine.createdAt.toISOString(),
         routine_name: routine.name,
         day_amount: list_of_days.size,
-        avg_day_exercises: sum_exercises / list_of_days.size,
+        avg_day_exercises: parseFloat((sum_exercises / list_of_days.size).toFixed(2)),
       });
     });
 
