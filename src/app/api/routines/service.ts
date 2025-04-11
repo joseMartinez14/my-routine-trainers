@@ -120,7 +120,7 @@ export const get_trainer_routines = async (trainer_uid: string): Promise<Routine
         ExerciseRoutineMap: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     });
 

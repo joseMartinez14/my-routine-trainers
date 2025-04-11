@@ -78,27 +78,6 @@ const Overview = () => {
                     <StatCard title='# Exercises' value={String(countExercises)} />
                 </Box>
 
-                {/* <Card sx={{ p: 2 }}>
-                    <Stack direction="row" spacing={3}>
-                        <OutlinedInput
-                            defaultValue=""
-                            fullWidth
-                            placeholder="Search Exercises"
-                            onChange={onSearchChange}
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />
-                                </InputAdornment>
-                            }
-                            sx={{ maxWidth: '500px' }}
-                        />
-                        <Button onClick={onSearchClick} startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-                            Search
-                        </Button>
-                    </Stack>
-
-                </Card> */}
-
                 <Typography variant="h5" sx={{ pt: 4 }}>
                     {'Oldest active routines'}
                 </Typography>

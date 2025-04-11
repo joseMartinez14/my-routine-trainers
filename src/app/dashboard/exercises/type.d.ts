@@ -24,8 +24,8 @@ export type ExerciseBodyPartsMap = {
 export type Exercise = {
   id: number;
   name: string;
-  iconLogoURL: string;
-  videoURL: string;
+  iconLogoURL: string?;
+  videoURL: string?;
   trainerID: string;
   ExerciseBodyPartsMap: ExerciseBodyPartsMap[];
 
