@@ -1,5 +1,13 @@
 // next.config.mjs
 
+const allowedOrigin = process.env.NODE_ENV === 'dev'
+  ? 'http://localhost:5173'
+  : 'https://my-routine-client.netlify.app';
+
+const allowedDestination = process.env.NODE_ENV === 'dev'
+  ? 'http://localhost:3000/api/client/:path*'
+  : 'my-routine-trainers.vercel.app';
+
 module.exports = {
   async headers() {
     return [
@@ -8,31 +16,35 @@ module.exports = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: 'http://localhost:5173', // Set to a specific origin (e.g., localhost:5173)
+            value: allowedOrigin,
+          },
+          {
+            key: 'Vary',
+            value: 'Origin', // important so CDN/browsers know the origin matters
           },
           {
             key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS', // Allow these HTTP methods
+            value: 'GET, POST, PUT, DELETE, OPTIONS',
           },
           {
             key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization', // Allow these headers
+            value: 'Content-Type, Authorization',
           },
           {
             key: 'Access-Control-Allow-Credentials',
-            value: 'true', // Allow cookies to be sent with requests
+            value: 'true',
           },
         ],
       },
-    ]
+    ];
   },
 
   async rewrites() {
     return [
       {
         source: '/api/client/:path*',
-        destination: 'http://localhost:3000/api/client/:path*', // Forward request to your backend
+        destination: allowedDestination,
       },
     ];
   },
-}
+};
