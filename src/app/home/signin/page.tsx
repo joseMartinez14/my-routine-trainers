@@ -66,7 +66,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 
-const Signin = (props: { disableCustomTheme?: boolean }) => {
+const Signin = () => {
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [emailError, setEmailError] = React.useState(false);

@@ -6,7 +6,7 @@ const allowedOrigin = process.env.NODE_ENV === 'dev'
 
 const allowedDestination = process.env.NODE_ENV === 'dev'
   ? 'http://localhost:3000/api/client/:path*'
-  : 'my-routine-trainers.vercel.app';
+  : 'https://my-routine-trainers.vercel.app';
 
 module.exports = {
   async headers() {

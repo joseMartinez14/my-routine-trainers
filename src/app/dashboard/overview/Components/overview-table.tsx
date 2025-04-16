@@ -1,7 +1,7 @@
 'use client';
 import { Box, Card, Radio, Divider, Stack, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react'
-import { RoutineListStat } from '../type';
+import { RoutineListStat } from '../../routines/type';
 
 //Por alguna puta razon no lo pude importar
 function formatDateBeautify(date_string: string): string {
