@@ -49,15 +49,13 @@ const ProfilePage = () => {
         setLoading(true);
 
         const token = await getNewerFirebaseToken();
-        await axios.get(`/api/profile/`, {
+        await axios.post(`/api/profile/`, [], {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
             .then((res) => {
                 const data: TrainerType = res.data;
-                console.log("********")
-                console.log(data)
                 if (data.photoURL) setImagePreview(data.photoURL)
                 setValue("name", data.name)
                 setValue("phone", data.phone)

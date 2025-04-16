@@ -2,7 +2,7 @@ import { uploadFileToS3 } from '@/utils/aws-s3';
 
 import { get_trainer_profile, update_profile } from './service';
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
     const trainer_id = req.headers.get('Trainer-ID') || '';
     const profile = await get_trainer_profile(trainer_id);
@@ -31,8 +31,6 @@ export async function PUT(req: Request) {
       return Response.json({ error: `Error saving video or image on AWS` }, { status: 500 });
     }
 
-    console.log('Meeee');
-    console.log(iconLink);
     const data_to_return = await update_profile(trainer_id, name, phone, aboutMe, iconLink);
     return Response.json(data_to_return);
   } catch (error: any) {
