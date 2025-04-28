@@ -1,12 +1,13 @@
 // next.config.mjs
 
-const allowedOrigin = process.env.NODE_ENV === 'dev'
+const allowedOrigin = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5173'
   : 'https://my-routine-client.netlify.app';
 
-const allowedDestination = process.env.NODE_ENV === 'dev'
+const allowedDestination = process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000/api/client/:path*'
   : 'https://my-routine-trainers.vercel.app';
+
 
 module.exports = {
   async headers() {

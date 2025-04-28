@@ -11,19 +11,25 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import DropdownInput from '@/app/components/DropdownInput';
 import TextInput from '@/app/components/TextInput';
-import { getNewerFirebaseToken } from '@/utils/auth';
 import RoutineExercisesTable from '../../clients/Components/routine-exercises-table';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
 
-const EditRoutine = () => {
+interface EditRoutineProps {
+    routine: Routine;
+    exerciseList: Exercise[];
+}
+
+const EditRoutine = (props: EditRoutineProps) => {
+
+    const { routine, exerciseList } = props;
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
-    const [routineName, setRoutineName] = useState<string>("");
-    const [routineComment, setRoutineComment] = useState<string>("");
-    const [client, setClient] = useState<Client | null>(null);
-    const [exerciseList, setExerciseList] = useState<Exercise[]>([])
+    const [routineName, setRoutineName] = useState<string>(routine.name || '');
+    const [client, setClient] = useState<Client | null>(routine.client);
+    const [routineComment, setRoutineComment] = useState<string>(routine.comment || '');
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-    const [exerciseRoutineList, setExerciseRoutineList] = useState<ExerciseRoutineMap[]>([])
+    const [exerciseRoutineList, setExerciseRoutineList] = useState<ExerciseRoutineMap[]>(routine.ExerciseRoutineMap)
     const [idCount, setIdCount] = useState<number>(0);
     const searchParams = useSearchParams();
 
@@ -36,57 +42,6 @@ const EditRoutine = () => {
     //==================================
     //Exercise section
     //==================================
-
-    const queryExercises = async () => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get("/api/exercises", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                setExerciseList(res.data)
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
-    }
-
-    const queryRoutine = async (id: string) => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-
-        await axios.get(`/api/routines/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                const data: Routine = res.data;
-                setClient(data.client);
-                setExerciseRoutineList([...exerciseRoutineList, ...data.ExerciseRoutineMap.sort((a, b) => a.day - b.day)])
-                if (data.name) setRoutineName(data.name)
-                if (data.comment) setRoutineComment(data.comment)
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
-    }
 
     const onSubmit = (data: AddRoutineExercise) => {
         if (selectedExercise) {
@@ -121,7 +76,7 @@ const EditRoutine = () => {
     const onRoutineSubmit = async () => {
         setLoading(true)
 
-        const token = await getNewerFirebaseToken();
+        const token = await getNewerFirebaseTokenClient();
         const routine_id = searchParams.get('routine_id');
         if (!routine_id) router.push("/dashboard/clients");
 
@@ -159,17 +114,6 @@ const EditRoutine = () => {
 
 
     }
-
-
-    useEffect(() => {
-
-        const routine_id = searchParams.get('routine_id');
-        if (!routine_id) router.push("/dashboard/clients");
-        else {
-            queryExercises();
-            queryRoutine(routine_id);
-        }
-    }, [])
 
     const page = 0;
     const rowsPerPage = 5;

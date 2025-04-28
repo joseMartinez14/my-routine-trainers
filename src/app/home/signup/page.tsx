@@ -16,11 +16,11 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from './components/CustomIcons';
 import { createUserWithEmailAndPassword, getAuth } from '@firebase/auth';
 import axios from 'axios';
 import firebase_app from '@/firebase/config';
 import LoadingModal from '@/app/components/LoadingModal';
+import { setCookie } from 'cookies-next';
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -144,9 +144,9 @@ export default function SignUp() {
             await axios.post("/api/auth", get_create_user_d)
                 .then((data) => {
                     const now = new Date().toUTCString();
-                    localStorage.setItem('myroutine-auth-token', idToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-refresh', refreshToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-time', now || 'Null token');
+                    setCookie('myroutine-auth-token', idToken || 'Null token');
+                    setCookie('myroutine-auth-token-refresh', refreshToken || 'Null token');
+                    setCookie('myroutine-auth-token-time', now || 'Null token');
                     router.push(`/dashboard`)
                 })
                 .catch((error) => {

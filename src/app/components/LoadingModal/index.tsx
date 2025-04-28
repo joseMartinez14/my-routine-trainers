@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal';
-import { ProgressBar } from 'react-loader-spinner';
+import { Hourglass } from 'react-loader-spinner';
 
 interface LoadingModalProps {
     open: boolean;
@@ -21,13 +21,14 @@ export default function LoadingModal(props: LoadingModalProps) {
                     left: '48%',
                 }}
             >
-                <ProgressBar
+                <Hourglass
                     visible={true}
                     height="80"
                     width="80"
-                    ariaLabel="progress-bar-loading"
+                    ariaLabel="hourglass-loading"
                     wrapperStyle={{}}
                     wrapperClass=""
+                    colors={['#306cce', '#72a1ed']}
                 />
             </Modal>
         </div>

@@ -11,16 +11,24 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
 import { AddClientForm, Client } from '../type';
-import { getNewerFirebaseToken } from '@/utils/auth';
 import { ClientRoutineStat } from '@/app/api/routines/type';
 import RoutinesTable from '../Components/routines-tables';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
 
-const EditClientElement = () => {
+interface EditClientElementProps {
+    client: Client | undefined | null;
+    routines: ClientRoutineStat[];
+}
+
+const EditClientElement = (props: EditClientElementProps) => {
+
+    const { client, routines } = props;
+
+
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [clientID, setClientID] = useState<string | null>(null);
-    const [routines, setRoutines] = useState<ClientRoutineStat[]>([]);
     const searchParams = useSearchParams();
 
     const [selectedRow, setSelectedRow] = useState<ClientRoutineStat | undefined>(undefined);
@@ -38,70 +46,23 @@ const EditClientElement = () => {
     } = useForm<AddClientForm>();
 
     useEffect(() => {
-        const client_id = searchParams.get('id');
-        if (!client_id) router.push("/dashboard/clients")
-        else {
-            queryClient(client_id);
-            queryRoutines(client_id);
-            setClientID(client_id);
+        if (client) {
+            setClient(client)
+            setClientID(String(client.id))
         }
 
+    }, [client]);
 
-    }, []);
+    const setClient = async (data: Client) => {
 
-    const queryRoutines = async (id: string) => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get(`/api/clientRoutine/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                const data: ClientRoutineStat[] = res.data;
-                setRoutines(data)
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
-    }
-
-    const queryClient = async (id: string) => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get(`/api/clients/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                const data: Client = res.data;
-                setValue("name", data.name);
-                setValue("phone", data.phone);
-                setValue("anatomy", data.anatomy);
-                setValue("injuries", data.injuries);
-                setValue("objective", data.objective);
-                setValue("experience", data.experience);
-                setValue("weeklyTrainingDays", data.weeklyTrainingDays);
-                setValue("trainingMinutes", data.trainingMinutes);
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
+        setValue("name", data.name);
+        setValue("phone", data.phone);
+        setValue("anatomy", data.anatomy);
+        setValue("injuries", data.injuries);
+        setValue("objective", data.objective);
+        setValue("experience", data.experience);
+        setValue("weeklyTrainingDays", data.weeklyTrainingDays);
+        setValue("trainingMinutes", data.trainingMinutes);
     }
 
     const onSubmit = async (data: AddClientForm) => {
@@ -129,7 +90,7 @@ const EditClientElement = () => {
         setLoading(true);
 
 
-        const new_token = await getNewerFirebaseToken()
+        const new_token = await getNewerFirebaseTokenClient()
         await axios.put(`/api/clients/${client_id}`, data, {
             headers: {
                 Authorization: `Bearer ${new_token}`,

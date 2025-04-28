@@ -10,7 +10,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
 import { AddClientForm } from '../type';
-import { getNewerFirebaseToken } from '@/utils/auth';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
 
 const AddClient = () => {
@@ -19,7 +19,7 @@ const AddClient = () => {
 
     const onSubmit = async (data: AddClientForm) => {
         setLoading(true);
-        const new_token = await getNewerFirebaseToken()
+        const new_token = await getNewerFirebaseTokenClient()
         await axios.post("/api/clients", data, {
             headers: {
                 Authorization: `Bearer ${new_token}`,
@@ -59,7 +59,9 @@ const AddClient = () => {
                 component="form"
                 autoComplete="on"
                 onSubmit={handleSubmit(onSubmit)}
+
             >
+
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
@@ -73,7 +75,7 @@ const AddClient = () => {
 
                         </div>
                     </Stack>
-                    <Card sx={{ p: 2 }}>
+                    <Card sx={{ p: 2, height: '80vh', overflow: 'auto' }}>
                         <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
                         <TextInput control={control} title='Phone number' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.name ? "This field is required" : undefined} />
                         <TextInput control={control} title='Client anatomy' value='anatomy' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
@@ -82,10 +84,11 @@ const AddClient = () => {
                         <TextInput control={control} title='Training experience' value='experience' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
                         <TextInput control={control} title='Training days a week' value='weeklyTrainingDays' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.weeklyTrainingDays ? "This field is required" : undefined} />
                         <TextInput control={control} title='Training time in minutes' value='trainingMinutes' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.trainingMinutes ? "This field is required" : undefined} />
+                        <Button type="submit" variant="contained" sx={{ maxWidth: '200px' }}>
+                            Submit
+                        </Button>
+
                     </Card>
-                    <Button type="submit" variant="contained" sx={{ maxWidth: '200px' }}>
-                        Submit
-                    </Button>
                 </Stack>
             </Box>
         </>

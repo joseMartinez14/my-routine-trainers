@@ -13,20 +13,29 @@ import { query } from 'firebase/firestore';
 import selectBpItem from '../Components/selectBpItem';
 import SelectBodyPartsItem from '../Components/selectBpItem';
 import { AddExerciseForm, Exercise } from '../type';
-import { getNewerFirebaseToken } from '@/utils/auth';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
 interface bodyParts {
     id: number,
     name: string
 }
 
-const UpdateExercise = () => {
+interface UpdateExerciseProps {
+    bodyPartsList: bodyParts[];
+    exercise: Exercise
+
+}
+
+const UpdateExercise = (props: UpdateExerciseProps) => {
+
+    const { bodyPartsList, exercise } = props;
+
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [bodyPartsList, setBodyPartsList] = useState<bodyParts[]>([]);
-    const [bodyPartsListSelected, setBodyPartsListSelected] = useState<bodyParts[]>([]);
+    const [bodyPartsListSelected, setBodyPartsListSelected] = useState<bodyParts[]>(bodyPartsList);
     const [selectedOption, setSelectedOption] = useState<{ id: number; name: string } | null>(null);
+    const searchParams = useSearchParams();
 
     //====================================
     //Image section
@@ -78,27 +87,6 @@ const UpdateExercise = () => {
         setBodyPartsListSelected((prev) => prev.filter((part) => part.id !== Number(id)));
 
     }
-
-
-    const queryBodyParts = async () => {
-        setLoading(true);
-
-        await axios.get("/api/bodyparts")
-            .then((res) => {
-                setBodyPartsList(res.data)
-
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
-    }
-
 
 
     //==================================
@@ -153,7 +141,7 @@ const UpdateExercise = () => {
             formData.append("bodPartsIds", idsString)
         }
 
-        const new_token = await getNewerFirebaseToken()
+        const new_token = await getNewerFirebaseTokenClient()
 
         await axios.put(`/api/exercises/${exercise_id}`, formData, {
             headers: {
@@ -188,48 +176,19 @@ const UpdateExercise = () => {
     //Specific exercise
     //==================================
 
-    const searchParams = useSearchParams();
+    const setup_data = async (data: Exercise) => {
+        setImagePreview(data.iconLogoURL)
+        setVideoPreview(data.videoURL)
+        setVideoPreviewType(`video/${data.videoURL?.split('.').pop()?.toLowerCase()}`)
+        setValue("name", data.name)
+        const bds = data.ExerciseBodyPartsMap.map((item) => {
+            return { id: item.bodyPart.id, name: item.bodyPart.name }
+        });
 
-    useEffect(() => {
-        queryBodyParts()
-        const exercise_id = searchParams.get('id');
-        if (!exercise_id) router.push("/dashboard/exercises")
-        else queryExercise(exercise_id);
-
-
-    }, []);
-
-    const queryExercise = async (id: string) => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get(`/api/exercises/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                const data: Exercise = res.data;
-                setImagePreview(data.iconLogoURL)
-                setVideoPreview(data.videoURL)
-                setVideoPreviewType(`video/${data.videoURL?.split('.').pop()?.toLowerCase()}`)
-                setValue("name", data.name)
-                const bds = data.ExerciseBodyPartsMap.map((item) => {
-                    return { id: item.bodyPart.id, name: item.bodyPart.name }
-                });
-
-                setBodyPartsListSelected(bds);
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
+        setBodyPartsListSelected(bds);
     }
+
+    useEffect(() => { setup_data(exercise) }, [])
 
 
 

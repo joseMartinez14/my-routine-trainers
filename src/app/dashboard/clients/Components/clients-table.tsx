@@ -49,6 +49,7 @@ const ClientsTable = (props: ClientsTableProps) => {
     };
 
     const page_rows = useMemo<Client[]>(() => {
+        console.error(rows)
         return rows.slice(actualPage * actualRowsPerPage, actualPage * actualRowsPerPage + actualRowsPerPage);
 
     }, [actualPage, actualRowsPerPage, rows])

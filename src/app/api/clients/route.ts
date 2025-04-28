@@ -6,6 +6,7 @@ export async function GET(req: Request) {
     const clients = await get_trainer_clients(trainer_id);
     return Response.json(clients);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

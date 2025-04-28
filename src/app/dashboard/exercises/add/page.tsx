@@ -9,11 +9,9 @@ import { maxWidth } from '@mui/system';
 import axios, { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import LoadingModal from '@/app/components/LoadingModal';
-import { query } from 'firebase/firestore';
-import selectBpItem from '../Components/selectBpItem';
 import SelectBodyPartsItem from '../Components/selectBpItem';
 import { AddExerciseForm } from '../type';
-import { getNewerFirebaseToken } from '@/utils/auth';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
 interface bodyParts {
     id: number,
@@ -120,7 +118,7 @@ const AddExercise = () => {
             formData.append("bodPartsIds", idsString)
         }
 
-        const new_token = await getNewerFirebaseToken()
+        const new_token = await getNewerFirebaseTokenClient()
         await axios.post("/api/exercises", formData, {
             headers: {
                 Authorization: `Bearer ${new_token}`,

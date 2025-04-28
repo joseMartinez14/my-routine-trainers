@@ -2,7 +2,7 @@
 import LoadingModal from '@/app/components/LoadingModal'
 import { Autocomplete, Box, Button, Card, Stack, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { AddRoutineExercise, Client } from '../../type';
@@ -11,77 +11,34 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import DropdownInput from '@/app/components/DropdownInput';
 import TextInput from '@/app/components/TextInput';
-import { getNewerFirebaseToken } from '@/utils/auth';
 import RoutineExercisesTable from '../../Components/routine-exercises-table';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
 
-const AddRoutine = () => {
+
+interface AddRoutineProps {
+    client: Client;
+    exerciseList: Exercise[];
+}
+
+const AddRoutine = (props: AddRoutineProps) => {
+
+    const { client, exerciseList } = props;
+
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [routineName, setRoutineName] = useState<string>("");
     const [routineComment, setRoutineComment] = useState<string>("");
-    const [client, setClient] = useState<Client | null>(null);
-    const [exerciseList, setExerciseList] = useState<Exercise[]>([])
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [exerciseRoutineList, setExerciseRoutineList] = useState<ExerciseRoutineMap[]>([])
     const [idCount, setIdCount] = useState<number>(0);
-    const searchParams = useSearchParams();
 
     //==================================
     //Exercise section
     //==================================
 
     const sortExercises = (obj: ExerciseRoutineMap) => {
-        console.log('---')
-        console.log(obj)
         const data = [...exerciseRoutineList, obj]
         setExerciseRoutineList(data.sort((a, b) => a.day - b.day));
-    }
-
-    const queryExercises = async () => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get("/api/exercises", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                setExerciseList(res.data)
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
-    }
-
-    const queryClient = async (id: string) => {
-        setLoading(true);
-
-        const token = await getNewerFirebaseToken();
-        await axios.get(`/api/clients/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-            .then((res) => {
-                const data: Client = res.data;
-                setClient(data);
-            })
-            .catch((error => {
-                console.error(error)
-                Swal.fire({
-                    title: "Error",
-                    text: `Message: ${error}`,
-                    icon: "error"
-                });
-            }))
-        setLoading(false);
     }
 
     const onSubmit = async (data: AddRoutineExercise) => {
@@ -115,7 +72,7 @@ const AddRoutine = () => {
 
     const onRoutineSubmit = async () => {
 
-        const token = await getNewerFirebaseToken();
+        const token = await getNewerFirebaseTokenClient();
 
         const data = {
             client_id: client?.id,
@@ -148,17 +105,6 @@ const AddRoutine = () => {
 
 
     }
-
-
-    useEffect(() => {
-
-        const client_id = searchParams.get('client_id');
-        if (!client_id) router.push("/dashboard/clients");
-        else {
-            queryExercises();
-            queryClient(client_id);
-        }
-    }, [])
 
     const page = 0;
     const rowsPerPage = 5;

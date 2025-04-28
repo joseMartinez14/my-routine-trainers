@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 import firebase_app from '@/firebase/config'
 import LoadingModal from '@/app/components/LoadingModal';
+import { setCookie } from 'cookies-next'
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -113,9 +114,9 @@ const Signin = () => {
             await axios.post("/api/auth", get_create_user_d)
                 .then((data) => {
                     const now = new Date().toUTCString();
-                    localStorage.setItem('myroutine-auth-token', idToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-refresh', refreshToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-time', now || 'Null token');
+                    setCookie('myroutine-auth-token', idToken || 'Null token');
+                    setCookie('myroutine-auth-token-refresh', refreshToken || 'Null token');
+                    setCookie('myroutine-auth-token-time', now || 'Null token');
                     router.push(`/dashboard`)
                 })
                 .catch((error) => {
@@ -176,9 +177,9 @@ const Signin = () => {
             await axios.post("/api/auth", get_create_user_d)
                 .then((data) => {
                     const now = new Date().toUTCString();
-                    localStorage.setItem('myroutine-auth-token', idToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-refresh', refreshToken || 'Null token');
-                    localStorage.setItem('myroutine-auth-token-time', now || 'Null token');
+                    setCookie('myroutine-auth-token', idToken || 'Null token');
+                    setCookie('myroutine-auth-token-refresh', refreshToken || 'Null token');
+                    setCookie('myroutine-auth-token-time', now || 'Null token');
                     router.push(`/dashboard`)
                 })
                 .catch((error) => {

@@ -2,7 +2,7 @@ import { uploadFileToS3 } from '@/utils/aws-s3';
 
 import { get_trainer_profile, update_profile } from './service';
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   try {
     const trainer_id = req.headers.get('Trainer-ID') || '';
     const profile = await get_trainer_profile(trainer_id);
