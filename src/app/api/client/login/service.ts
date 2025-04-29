@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
-export const check_client_data = async (trainer_id: string, client_id: number) => {
+export const check_client_data = async (trainer_id: string, client_id: string) => {
   try {
     const client = await prisma.clients.findFirstOrThrow({
       where: {

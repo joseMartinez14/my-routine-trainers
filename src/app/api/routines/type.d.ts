@@ -8,7 +8,7 @@ export type ClientRoutineStat = {
 
 export type RoutinesStat = {
   routine_id: number;
-  client_id: number;
+  client_id: string;
   client_name: string;
   routine_created_time: string;
   routine_name: string?;

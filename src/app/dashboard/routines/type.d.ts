@@ -1,5 +1,5 @@
 export type RoutineListStat = {
-  client_id: number;
+  client_id: string;
   client_name: string;
   routine_id: number;
   routine_created_time: string;

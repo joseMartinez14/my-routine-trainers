@@ -10,7 +10,7 @@ export type AddClientForm = {
 };
 
 export type Client = {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   anatomy: string?;

@@ -6,8 +6,10 @@ import { prisma } from '@/lib/prisma';
 
 export const create_new_client = async (trainer_uid: string, client_obj: AddClientForm) => {
   try {
+    const client_id = getRandomString();
     const new_client = await prisma.clients.create({
       data: {
+        id: client_id,
         trainersId: trainer_uid,
         name: client_obj.name,
         phone: client_obj.phone,
@@ -28,7 +30,7 @@ export const create_new_client = async (trainer_uid: string, client_obj: AddClie
 export const get_one_client = async (trainer_id: string, client_id: string) => {
   const exercise = await prisma.clients.findUniqueOrThrow({
     where: {
-      id: Number(client_id),
+      id: client_id,
     },
     // include: {
     //   ExerciseBodyPartsMap: {
@@ -74,3 +76,13 @@ export const edit_new_client = async (trainer_uid: string, client_obj: Client) =
     throw error;
   }
 };
+
+function getRandomString(length: number = 5): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    result += chars[randomIndex];
+  }
+  return result;
+}

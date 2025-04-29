@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 
 import { RoutineDay, RoutineDayExercises, RoutineDaysStats } from './type';
 
-export const get_home_routine = async (client_id: number, trainer_id: string) => {
+export const get_home_routine = async (client_id: string, trainer_id: string) => {
   try {
     const routine = await prisma.routines.findFirst({
       where: {

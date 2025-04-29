@@ -19,7 +19,7 @@ export async function PUT(req: Request, { params }: { params: { clientID: string
     const clientID = params.clientID;
     const data = await req.json();
     return await edit_new_client(trainer_id, {
-      id: Number(clientID),
+      id: clientID,
       name: data.name,
       phone: data.phone,
       anatomy: data.anatomy,

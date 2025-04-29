@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 import { ClientRoutineStat, RoutinesStat } from './type';
 
-export const get_client_routines = async (trainer_uid: string, client_id: number) => {
+export const get_client_routines = async (trainer_uid: string, client_id: string) => {
   try {
     const routines = await prisma.routines.findMany({
       where: {
@@ -54,7 +54,7 @@ export const get_client_routines = async (trainer_uid: string, client_id: number
 
 export const create_new_routine = async (
   trainer_uid: string,
-  client_id: number,
+  client_id: string,
   routine_name: string,
   routine_comment: string,
   obj_list: ExerciseRoutineMap[]
