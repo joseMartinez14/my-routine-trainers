@@ -60,6 +60,16 @@ export const get_one_exercise = async (trainer_id: string, exercise_id: string) 
   return exercise;
 };
 
+export const delete_exercise = async (exercise_id: string) => {
+  await prisma.exercises.delete({
+    where: {
+      id: Number(exercise_id),
+    },
+  });
+
+  return true;
+};
+
 export const update_exercise = async (
   trainer_id: string,
   exercises_id: number,

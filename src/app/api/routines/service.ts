@@ -185,6 +185,21 @@ export const get_routine_by_ID = async (routine_id: number) => {
   }
 };
 
+export const delete_routine = async (routine_id: number) => {
+  await prisma.routines.delete({
+    where: {
+      id: routine_id,
+    },
+    // include: {
+    //   ExerciseBodyPartsMap: {
+    //     include: { bodyPart: true },
+    //   },
+    // },
+  });
+
+  return true;
+};
+
 export const update_routine = async (
   routine_id: number,
   routine_name: string,

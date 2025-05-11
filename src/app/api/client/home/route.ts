@@ -13,6 +13,7 @@ export async function GET(req: Request) {
     const data = await get_home_routine(client_id, trainer_id);
     return Response.json(data);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

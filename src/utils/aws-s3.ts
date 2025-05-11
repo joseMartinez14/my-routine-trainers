@@ -1,7 +1,11 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid'; // Import the UUID module
 
-export const uploadFileToS3 = async (file: File, user_id: string) => {
+export const uploadFileToS3 = async (
+  file: File,
+  user_id: string,
+  content_type: string = 'application/octet-stream'
+) => {
   const s3Client = new S3Client({
     region: process.env.AWS_REGION!,
     credentials: {
@@ -22,6 +26,7 @@ export const uploadFileToS3 = async (file: File, user_id: string) => {
     Bucket: process.env.BUCKET_NAME,
     Key: keyName,
     Body: buffer,
+    ContentType: content_type, // ✅ This is what you need
   });
 
   const result = await s3Client.send(command);

@@ -14,6 +14,7 @@ export async function GET(req: Request) {
     const data_to_return = await check_client_data(trainer_id, client_id);
     return Response.json(data_to_return);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 406 });
   }
 }

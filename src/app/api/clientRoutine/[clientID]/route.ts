@@ -7,6 +7,7 @@ export async function GET(request: Request, { params }: { params: { clientID: st
     const data_to_send = await get_client_routines(trainer_id, clientID);
     return Response.json(data_to_send);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

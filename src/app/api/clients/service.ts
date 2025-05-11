@@ -27,6 +27,21 @@ export const create_new_client = async (trainer_uid: string, client_obj: AddClie
   }
 };
 
+export const delete_client = async (client_id: string) => {
+  await prisma.clients.delete({
+    where: {
+      id: client_id,
+    },
+    // include: {
+    //   ExerciseBodyPartsMap: {
+    //     include: { bodyPart: true },
+    //   },
+    // },
+  });
+
+  return true;
+};
+
 export const get_one_client = async (trainer_id: string, client_id: string) => {
   const exercise = await prisma.clients.findUniqueOrThrow({
     where: {

@@ -80,9 +80,9 @@ model ExerciseRoutineMap {
 
 model ExerciseBodyPartsMap {
   id         Int       @id @default(autoincrement())
-  exercise   Exercises @relation(fields: [exerciseID], references: [id])
+  exercise   Exercises @relation(fields: [exerciseID], references: [id], onDelete: Cascade)
   exerciseID Int
-  bodyPart   BodyParts @relation(fields: [bodyPartID], references: [id])
+  bodyPart   BodyParts @relation(fields: [bodyPartID], references: [id], onDelete: Cascade)
   bodyPartID Int
 }
 

@@ -9,6 +9,7 @@ export async function GET(req: Request) {
     return Response.json(profile);
   } catch (error: any) {
     console.error(error);
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

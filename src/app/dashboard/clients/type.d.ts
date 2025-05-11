@@ -1,4 +1,5 @@
 export type AddClientForm = {
+  id: string;
   name: string;
   phone: string;
   anatomy: string?;

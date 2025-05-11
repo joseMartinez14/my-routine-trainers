@@ -8,6 +8,7 @@ export async function GET(req: Request) {
     const exercises = await get_trainer_exercises(trainer_id);
     return Response.json(exercises);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }
@@ -36,6 +37,7 @@ export async function POST(req: Request) {
 
     return await create_new_exercise(trainer_id, name, iconLink, videoLink, bodypartsIDs);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

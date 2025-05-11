@@ -1,6 +1,6 @@
 import { uploadFileToS3 } from '@/utils/aws-s3';
 
-import { get_one_exercise, update_exercise } from '../service';
+import { delete_exercise, get_one_exercise, update_exercise } from '../service';
 
 export async function GET(request: Request, { params }: { params: { exerciseID: string } }) {
   try {
@@ -10,6 +10,17 @@ export async function GET(request: Request, { params }: { params: { exerciseID: 
     return Response.json(exercises);
   } catch (error) {
     console.error('Error fetching exercise:', error);
+    return Response.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: { exerciseID: string } }) {
+  try {
+    const exerciseID = params.exerciseID;
+    await delete_exercise(exerciseID);
+    return Response.json({ info: 'SUCCESS' });
+  } catch (error) {
+    console.error('Error deleting exercise:', error);
     return Response.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

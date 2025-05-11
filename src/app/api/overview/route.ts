@@ -6,6 +6,7 @@ export async function GET(req: Request) {
     const data_to_return = await get_overview_stats(trainer_id);
     return Response.json(data_to_return);
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

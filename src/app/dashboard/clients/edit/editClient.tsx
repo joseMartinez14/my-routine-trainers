@@ -55,6 +55,7 @@ const EditClientElement = (props: EditClientElementProps) => {
 
     const setClient = async (data: Client) => {
 
+        setValue("id", data.id);
         setValue("name", data.name);
         setValue("phone", data.phone);
         setValue("anatomy", data.anatomy);
@@ -173,6 +174,7 @@ const EditClientElement = (props: EditClientElementProps) => {
                     />
 
                     <Card sx={{ p: 2 }}>
+                        <TextInput control={control} title='ID' value='id' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} disabled />
                         <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} disabled />
                         <TextInput control={control} title='Phone number' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.name ? "This field is required" : undefined} />
                         <TextInput control={control} title='Client anatomy' value='anatomy' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />

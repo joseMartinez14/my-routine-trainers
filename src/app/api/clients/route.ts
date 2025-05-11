@@ -16,6 +16,7 @@ export async function POST(req: Request) {
     const trainer_id = req.headers.get('Trainer-ID') || '';
     const data = await req.json();
     return await create_new_client(trainer_id, {
+      id: '',
       name: data.name,
       phone: data.phone,
       anatomy: data.anatomy,
@@ -26,6 +27,7 @@ export async function POST(req: Request) {
       trainingMinutes: data.trainingMinutes,
     });
   } catch (error: any) {
+    console.error(error);
     return Response.json({ error: error }, { status: 500 });
   }
 }

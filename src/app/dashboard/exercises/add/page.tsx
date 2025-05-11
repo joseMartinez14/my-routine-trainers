@@ -1,5 +1,5 @@
 'use client'
-import { Autocomplete, Avatar, Box, Button, Card, Grid2, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Avatar, Box, Button, Card, Grid2, Paper, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -12,6 +12,8 @@ import LoadingModal from '@/app/components/LoadingModal';
 import SelectBodyPartsItem from '../Components/selectBpItem';
 import { AddExerciseForm } from '../type';
 import { getNewerFirebaseTokenClient } from '@/utils/authClient';
+
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 interface bodyParts {
     id: number,
@@ -145,11 +147,84 @@ const AddExercise = () => {
         setLoading(false);
     }
 
+    //==================================
+    //=============== AI ===============
+    //==================================
+
+
+    const onAIsubmit = async () => {
+
+        const exerciseName = watch('name');
+
+        if (!exerciseName) {
+            Swal.fire({
+                icon: "error",
+                text: "Inserte el nombre del ejercicio",
+            });
+            return
+        }
+
+        let continue_query = true;
+
+        await Swal.fire({
+            title: `Quieres generar una imagen y video con AI para el ejercicio '${exerciseName}'?`,
+            showDenyButton: true,
+            confirmButtonText: "Generar",
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isDenied) {
+                Swal.fire("No se generó nada", "", "info");
+                continue_query = false
+            }
+        });
+
+        if (!continue_query) return
+
+
+        setLoading(true);
+
+        const data = {
+            exercise: exerciseName
+        }
+
+        const new_token = await getNewerFirebaseTokenClient()
+        await axios.post("/api/exercises/ai", data, {
+            headers: {
+                Authorization: `Bearer ${new_token}`,
+            },
+        })
+            .then((res) => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Creado",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                console.log("Respuesta de los datos")
+                console.log(res.data)
+
+                setImagePreview(res.data.imageURL)
+                setVideoPreview(res.data.videoURL)
+            })
+            .catch((error: AxiosError) => {
+                console.error(error)
+                Swal.fire({
+                    title: "Error",
+                    text: `Message: ${error.response?.data}`,
+                    icon: "error"
+                });
+            })
+        setLoading(false);
+    }
+
 
 
     const {
         control,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm<AddExerciseForm>();
 
@@ -172,7 +247,7 @@ const AddExercise = () => {
                             </Button>
                         </div>
                     </Stack>
-                    <Card sx={{ p: 2 }}>
+                    <Card sx={{ p: 2, height: '72vh', overflow: 'auto' }}>
                         <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
 
                         <Box display="flex" flexDirection="column" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', py: 4 }}>
@@ -199,7 +274,7 @@ const AddExercise = () => {
                             />
                         </Box>
 
-                        <Box display="flex" flexDirection="column" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', pb: 4 }}>
+                        <Box display="flex" flexDirection="column" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', pb: 2 }}>
                             <Grid2 container spacing={5} >
                                 {bodyPartsListSelected.map((item) => (
                                     <Grid2 key={item.id} >
@@ -215,6 +290,31 @@ const AddExercise = () => {
                                 ))}
                             </Grid2>
                         </Box>
+
+                        <Paper elevation={2} sx={{ py: 0.4, width: '250px', backgroundColor: '#6d6d6d' }}>
+                            <div onClick={() => { onAIsubmit() }}>
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'columm',
+                                    justifyContent: 'space-around',
+                                    p: 1
+                                }}>
+                                    <Typography
+                                        variant="subtitle2"
+                                        gutterBottom
+                                        sx={{
+                                            fontSize: '12px',
+                                            margin: 0,
+                                            fontWeight: 400,
+                                            textAlign: 'center'
+
+                                        }}>
+                                        {"Build image and video with AI"}
+                                    </Typography>
+                                    <AutoAwesomeIcon />
+                                </Box>
+                            </div>
+                        </Paper>
 
                         <Typography
                             variant="subtitle2"

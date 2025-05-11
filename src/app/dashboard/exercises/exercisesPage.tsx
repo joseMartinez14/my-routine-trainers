@@ -12,6 +12,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import LoadingModal from '@/app/components/LoadingModal';
 import ExercisesTable, { Exercise } from './Components/exercises-table';
+import Swal from 'sweetalert2';
+import { getNewerFirebaseTokenClient } from '@/utils/authClient';
+import axios, { AxiosError } from 'axios';
 
 
 interface ExercisesPageProps {
@@ -50,6 +53,56 @@ const ExercisesPage = (props: ExercisesPageProps) => {
         setfilteredExercises(filteredExercises)
     }
 
+
+
+    const onDelete = async (id: string) => {
+        let continue_query = true;
+
+        await Swal.fire({
+            title: `Eliminar ejercicio con id ${id}?`,
+            showDenyButton: true,
+            confirmButtonText: "Confirmar",
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isDenied) {
+                Swal.fire("No se eliminó nada", "", "info");
+                continue_query = false
+            }
+        });
+
+        if (!continue_query) return
+
+        const new_token = await getNewerFirebaseTokenClient()
+
+        setLoading(true);
+        await axios.delete(`/api/exercises/${id}`, {
+            headers: {
+                Authorization: `Bearer ${new_token}`,
+            },
+        })
+            .then((res) => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Ejercicio eliminado",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+            .catch((error: AxiosError) => {
+                console.error(error)
+                Swal.fire({
+                    title: "Error",
+                    text: `Message: ${error.response?.data}`,
+                    icon: "error"
+                });
+            })
+        setLoading(false);
+    }
+
+
+
     const page = 0;
     const rowsPerPage = 5;
     return (
@@ -62,11 +115,11 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                     </Stack>
                     <div>
                         <Button
-                            onClick={() => { router.push(`${window.location.pathname}/add`) }}
+                            onClick={() => { onDelete(selectedRows[0].id) }}
                             startIcon={<DeleteOutlinedIcon />}
                             variant="contained"
                             sx={{ mx: 2 }}
-                            disabled={!(selectedRows.length > 0)}
+                            disabled={!(selectedRows.length == 1)}
                         >
                             Remove
                         </Button>
