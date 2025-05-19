@@ -25,8 +25,8 @@ export async function POST(req: Request) {
 
     // return Response.json({ error: 'Puta vida' }, { status: 500 });
 
-    let iconLink: string | null = null;
-    let videoLink: string | null = null;
+    let iconLink: string | null = data.get('aiImageLink') as string;
+    let videoLink: string | null = data.get('aiVideoLink') as string;
     try {
       if (icon) iconLink = await uploadFileToS3(icon, trainer_id);
       if (video) videoLink = await uploadFileToS3(video, trainer_id);
