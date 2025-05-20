@@ -111,7 +111,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">Exercises</Typography>
+                        <Typography variant="h4">Ejercicios</Typography>
                     </Stack>
                     <div>
                         <Button
@@ -121,7 +121,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                             sx={{ mx: 2 }}
                             disabled={!(selectedRows.length == 1)}
                         >
-                            Remove
+                            Eliminar
                         </Button>
                         <Button
                             onClick={() => { router.push(`${window.location.pathname}/update?id=${selectedRows[0].id}`) }}
@@ -130,7 +130,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                             disabled={!(selectedRows.length == 1)}
                             sx={{ mx: 2 }}
                         >
-                            Edit
+                            Editar
                         </Button>
 
                         <Button
@@ -139,7 +139,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                             variant="contained"
                             sx={{ mx: 2 }}
                         >
-                            Add
+                            Agregar
                         </Button>
 
 
@@ -150,7 +150,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                         <OutlinedInput
                             defaultValue=""
                             fullWidth
-                            placeholder="Search Exercises"
+                            placeholder="Buscar ejercicios"
                             onChange={onSearchChange}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -160,7 +160,7 @@ const ExercisesPage = (props: ExercisesPageProps) => {
                             sx={{ maxWidth: '500px' }}
                         />
                         <Button onClick={onSearchClick} startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-                            Search
+                            Buscar
                         </Button>
                     </Stack>
 

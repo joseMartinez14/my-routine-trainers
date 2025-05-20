@@ -43,7 +43,7 @@ const OverviewPage = (props: OverviewProps) => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">Overview</Typography>
+                        <Typography variant="h4">Resumen</Typography>
                     </Stack>
                 </Stack>
                 <Box sx={{
@@ -52,13 +52,13 @@ const OverviewPage = (props: OverviewProps) => {
                     flexDirection: 'row',
                     justifyContent: 'space-around'
                 }}>
-                    <StatCard title='Active routines' value={String(countRoutine)} />
-                    <StatCard title='# Clients' value={String(countClients)} />
-                    <StatCard title='# Exercises' value={String(countExercises)} />
+                    <StatCard title='Rutinas Activas' value={String(countRoutine)} />
+                    <StatCard title='# Clientes' value={String(countClients)} />
+                    <StatCard title='# Ejercicios' value={String(countExercises)} />
                 </Box>
 
                 <Typography variant="h5" sx={{ pt: 4 }}>
-                    {'Oldest active routines'}
+                    {'Rutinas activas más viejas'}
                 </Typography>
                 <Stack direction="row" spacing={3}>
                     <div></div>
@@ -70,7 +70,7 @@ const OverviewPage = (props: OverviewProps) => {
                             disabled={!selectedRow}
                             sx={{ mx: 2 }}
                         >
-                            Edit
+                            Editar
                         </Button>
                         <Button
                             onClick={() => { router.push(`/dashboard/clients/routine/add?client_id=${selectedRow?.client_id}`) }}
@@ -79,7 +79,7 @@ const OverviewPage = (props: OverviewProps) => {
                             disabled={!selectedRow}
                             sx={{ mx: 2 }}
                         >
-                            Add new
+                            Agregar nueva
                         </Button>
                     </div>
                 </Stack>

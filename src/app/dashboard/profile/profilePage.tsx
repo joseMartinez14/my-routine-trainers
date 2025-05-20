@@ -129,7 +129,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                            <Typography variant="h4">My profile</Typography>
+                            <Typography variant="h4">Mi perfil</Typography>
                         </Stack>
 
                     </Stack>
@@ -162,9 +162,9 @@ const ProfilePage = (props: ProfilePageProps) => {
                                     variant="outlined"
                                 />
                             </Box>
-                            <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
-                            <TextInput control={control} title='Phone' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.phone ? "This field is required" : undefined} />
-                            <TextInput control={control} title='About me' value='aboutMe' isRequired={false} multiline styles={{ width: '100%', pt: '10px' }} error={errors?.aboutMe ? "This field is required" : undefined} />
+                            <TextInput control={control} title='Nombre' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
+                            <TextInput control={control} title='Telefono' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.phone ? "This field is required" : undefined} />
+                            <TextInput control={control} title='Sobre mi' value='aboutMe' isRequired={false} multiline styles={{ width: '100%', pt: '10px' }} error={errors?.aboutMe ? "This field is required" : undefined} />
 
                         </Stack>
 
@@ -177,7 +177,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                                 fontWeight: 500,
                                 pt: 4
                             }}>
-                            {"Profile picture"}
+                            {"Foto de perfil"}
                         </Typography>
                         <Box display="flex" flexDirection="row" alignItems="center" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', pb: 5 }}>
 
@@ -193,7 +193,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                             {/* Upload Button */}
                             <label htmlFor="image-upload">
                                 <Button variant="contained" component="span">
-                                    Upload Image
+                                    Subir imagen
                                 </Button>
                             </label>
                             {/* Image Preview */}
@@ -206,8 +206,8 @@ const ProfilePage = (props: ProfilePageProps) => {
 
                         </Box>
 
-                        <CardActions sx={{ justifyContent: 'flex-end' }}>
-                            <Button type="submit" variant="contained">Save changes</Button>
+                        <CardActions sx={{}}>
+                            <Button type="submit" variant="contained">Guardar cambios</Button>
                         </CardActions>
 
                     </Card>

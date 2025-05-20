@@ -203,16 +203,16 @@ const UpdateExercise = (props: UpdateExerciseProps) => {
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                            <Typography variant="h4">Edit exercise</Typography>
+                            <Typography variant="h4">Editar ejercicio</Typography>
                         </Stack>
                         <div>
                             <Button onClick={() => { router.push("/dashboard/exercises") }} startIcon={<ArrowBackIcon />} variant="contained">
-                                Back
+                                Atras
                             </Button>
                         </div>
                     </Stack>
                     <Card sx={{ p: 2 }}>
-                        <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
+                        <TextInput control={control} title='Nombre' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
 
                         <Box display="flex" flexDirection="column" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', py: 4 }}>
                             <Typography
@@ -224,7 +224,7 @@ const UpdateExercise = (props: UpdateExerciseProps) => {
                                     padding: 0,
                                     fontWeight: 500,
                                 }}>
-                                {"Body Parts activated"}
+                                {"Partes del cuerpo activadas"}
                             </Typography>
                             <Autocomplete
                                 options={bodyPartsList}

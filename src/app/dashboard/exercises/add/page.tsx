@@ -318,11 +318,11 @@ const AddExercise = () => {
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                            <Typography variant="h4">Add exercise</Typography>
+                            <Typography variant="h4">Agregar ejercicio</Typography>
                         </Stack>
                         <div>
                             <Button onClick={() => { router.push("/dashboard/exercises") }} startIcon={<ArrowBackIcon />} variant="contained">
-                                Back
+                                Atras
                             </Button>
                         </div>
                     </Stack>
@@ -339,7 +339,7 @@ const AddExercise = () => {
                                     padding: 0,
                                     fontWeight: 500,
                                 }}>
-                                {"Body Parts activated"}
+                                {"Partes del cuerpo activadas"}
                             </Typography>
                             <Autocomplete
                                 options={bodyPartsList}
@@ -379,13 +379,13 @@ const AddExercise = () => {
                                 fontWeight: 500,
                                 pt: 4
                             }}>
-                            {"Exercise Icon"}
+                            {"Imagen del ejercicio"}
                         </Typography>
                         <Box display="flex" flexDirection="row" alignItems="center" gap={2} sx={{ width: '100%', maxWidth: '600px', pt: '10px', pb: 5 }}>
 
                             {/* Hidden File Input */}
 
-                            <AiButton onAIsubmit={onAIsubmit} text='Build image with AI' width='160px' />
+                            <AiButton onAIsubmit={onAIsubmit} text='Crear imagen con IA' width='160px' />
 
                             <input
                                 type="file"
@@ -398,7 +398,7 @@ const AddExercise = () => {
                             {/* Upload Button */}
                             <label htmlFor="image-upload">
                                 <Button variant="contained" component="span">
-                                    Upload Image
+                                    Subir imagen
                                 </Button>
                             </label>
                             {/* Image Preview */}
@@ -437,7 +437,7 @@ const AddExercise = () => {
                             {/* Upload Button */}
                             <label htmlFor="video-upload">
                                 <Button variant="contained" component="span">
-                                    Upload Video
+                                    Subir video
                                 </Button>
                             </label>
                             {/* Video Preview */}

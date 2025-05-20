@@ -52,7 +52,7 @@ const RoutinesLandingPage = (props: RoutinesLandingProps) => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">My active routines</Typography>
+                        <Typography variant="h4">Mis rutinas activas</Typography>
                     </Stack>
                     <div>
                         <Button
@@ -62,7 +62,7 @@ const RoutinesLandingPage = (props: RoutinesLandingProps) => {
                             disabled={!selectedRow}
                             sx={{ mx: 2 }}
                         >
-                            Edit
+                            Editar
                         </Button>
                         <Button
                             onClick={() => { router.push(`/dashboard/clients/routine/add?client_id=${selectedRow?.client_id}`) }}
@@ -71,7 +71,7 @@ const RoutinesLandingPage = (props: RoutinesLandingProps) => {
                             disabled={!selectedRow}
                             sx={{ mx: 2 }}
                         >
-                            Add new
+                            Agregar
                         </Button>
                     </div>
                 </Stack>
@@ -80,7 +80,7 @@ const RoutinesLandingPage = (props: RoutinesLandingProps) => {
                         <OutlinedInput
                             defaultValue=""
                             fullWidth
-                            placeholder="Search Routines"
+                            placeholder="Buscar rutinas"
                             onChange={onSearchChange}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -90,7 +90,7 @@ const RoutinesLandingPage = (props: RoutinesLandingProps) => {
                             sx={{ maxWidth: '500px' }}
                         />
                         <Button onClick={onSearchClick} startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-                            Search
+                            Buscar
                         </Button>
                     </Stack>
 

@@ -44,7 +44,6 @@ const ClientsPage = (props: ClientsPageProps) => {
     }
 
     const onSearchClick = () => {
-        console.log("Pichhaaa")
         const filteredClients = clientsRows.filter(client =>
             client.name.toLowerCase().includes(search.toLowerCase()) ||
             client.phone.includes(search) // Optionally filter by phone number as well
@@ -61,7 +60,7 @@ const ClientsPage = (props: ClientsPageProps) => {
             <Stack spacing={3}>
                 <Stack direction="row" spacing={3}>
                     <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                        <Typography variant="h4">Clients</Typography>
+                        <Typography variant="h4">Clientes</Typography>
                     </Stack>
                     <div>
                         <Button
@@ -71,7 +70,7 @@ const ClientsPage = (props: ClientsPageProps) => {
                             sx={{ mx: 2 }}
                             disabled={!(selectedRows.length > 0)}
                         >
-                            Remove
+                            Eliminar
                         </Button>
                         <Button
                             onClick={() => { router.push(`${window.location.pathname}/edit?id=${selectedRows[0].id}`) }}
@@ -80,7 +79,7 @@ const ClientsPage = (props: ClientsPageProps) => {
                             disabled={!(selectedRows.length == 1)}
                             sx={{ mx: 2 }}
                         >
-                            Edit
+                            Editar
                         </Button>
 
                         <Button
@@ -89,7 +88,7 @@ const ClientsPage = (props: ClientsPageProps) => {
                             variant="contained"
                             sx={{ mx: 2 }}
                         >
-                            Add
+                            Agregar
                         </Button>
                     </div>
                 </Stack>
@@ -98,7 +97,7 @@ const ClientsPage = (props: ClientsPageProps) => {
                         <OutlinedInput
                             defaultValue=""
                             fullWidth
-                            placeholder="Search Clients"
+                            placeholder="Buscar clientes"
                             onChange={onSearchChange}
                             startAdornment={
                                 <InputAdornment position="start">
@@ -108,7 +107,7 @@ const ClientsPage = (props: ClientsPageProps) => {
                             sx={{ maxWidth: '500px' }}
                         />
                         <Button onClick={onSearchClick} startIcon={<MagnifyingGlassIcon fontSize="var(--icon-fontSize-md)" />} variant="contained">
-                            Search
+                            Buscar
                         </Button>
                     </Stack>
 

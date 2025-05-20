@@ -65,27 +65,27 @@ const AddClient = () => {
                 <Stack spacing={3}>
                     <Stack direction="row" spacing={3}>
                         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
-                            <Typography variant="h4">Add client</Typography>
+                            <Typography variant="h4">Agregar cliente</Typography>
                         </Stack>
                         <div>
 
                             <Button onClick={() => { router.push("/dashboard/clients") }} startIcon={<ArrowBackIcon />} variant="contained">
-                                Back
+                                Atras
                             </Button>
 
                         </div>
                     </Stack>
                     <Card sx={{ p: 2, height: '80vh', overflow: 'auto' }}>
-                        <TextInput control={control} title='Name' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
-                        <TextInput control={control} title='Phone number' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.name ? "This field is required" : undefined} />
-                        <TextInput control={control} title='Client anatomy' value='anatomy' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
-                        <TextInput control={control} title='Past injuries' value='injuries' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
-                        <TextInput control={control} title='Objective' value='objective' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
-                        <TextInput control={control} title='Training experience' value='experience' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
-                        <TextInput control={control} title='Training days a week' value='weeklyTrainingDays' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.weeklyTrainingDays ? "This field is required" : undefined} />
-                        <TextInput control={control} title='Training time in minutes' value='trainingMinutes' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.trainingMinutes ? "This field is required" : undefined} />
+                        <TextInput control={control} title='Nombre' value='name' isRequired={true} styles={{ width: '100%', maxWidth: '600px', pt: '10px' }} error={errors?.name ? "This field is required" : undefined} />
+                        <TextInput control={control} title='Número telefonico' value='phone' isRequired={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.name ? "This field is required" : undefined} />
+                        <TextInput control={control} title='Anatomia del cliente' value='anatomy' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
+                        <TextInput control={control} title='Lesiones pasadas' value='injuries' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
+                        <TextInput control={control} title='Objetivo' value='objective' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
+                        <TextInput control={control} title='Experiencia entrenando' value='experience' isRequired={false} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} />
+                        <TextInput control={control} title='Cantidad de dias a la semana' value='weeklyTrainingDays' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.weeklyTrainingDays ? "This field is required" : undefined} />
+                        <TextInput control={control} title='Tiempo para entrenar (Minutos)' value='trainingMinutes' isRequired={true} justNumber={true} styles={{ width: '100%', maxWidth: '600px', py: '20px' }} error={errors?.trainingMinutes ? "This field is required" : undefined} />
                         <Button type="submit" variant="contained" sx={{ maxWidth: '200px' }}>
-                            Submit
+                            Guardar
                         </Button>
 
                     </Card>
