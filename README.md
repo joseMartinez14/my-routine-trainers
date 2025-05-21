@@ -25,5 +25,5 @@
 
 ![Alt text](https://gym-routine.s3.us-east-2.amazonaws.com/my-routine-collage.png)
 
-Watch the AI demo
+Click Image to Watch the AI demo
 [![Watch the AI demo](https://gym-routine.s3.us-east-2.amazonaws.com/ss5.png)](https://gym-routine.s3.us-east-2.amazonaws.com/Screen+Recording+2025-05-20+at+6.55.37%E2%80%AFPM.MOV)
