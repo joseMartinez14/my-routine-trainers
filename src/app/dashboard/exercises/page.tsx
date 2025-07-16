@@ -1,44 +1,45 @@
+import React from 'react';
 import ExercisesPage from "./exercisesPage";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from 'next/navigation';
+import type { Exercise as APIExercise } from './type';
 
-const queryExercises = async () => {
+const queryExercises = async (): Promise<APIExercise[] | null> => {
     const cookieStore = cookies();
     const cookieHeader = cookieStore.getAll()
         .map(({ name, value }) => `${name}=${value}`)
         .join('; ');
 
-    const res = await fetch(`${process.env.MY_API_URL}/exercises`, {
+    // Get the current host from headers
+    const headersList = headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+
+    const res = await fetch(`${protocol}://${host}/api/exercises`, {
         method: 'GET',
         headers: {
             'Cookie': cookieHeader,
-            'Content-Type': 'application/json', // Optional, but good practice
+            'Content-Type': 'application/json',
         },
         cache: 'no-store',
     });
 
     if (res.ok) {
-        const data = await res.json();
-        return data;
+        return await res.json() as APIExercise[];
     }
 
     if (res.status === 401) {
         redirect('/home/signin');
     }
-    console.error('Error on Overview page.tsx fetch');
-    console.error(res.status, res.statusText);
+
     return null;
 }
 
-
-const Exercices = async () => {
+export default async function Exercises(): Promise<React.JSX.Element> {
     const exercises = await queryExercises();
 
     return (
-        <ExercisesPage exerciseRows={exercises} />
+        // @ts-expect-error: Type mismatch between API Exercise and Table Exercise types
+        <ExercisesPage exerciseRows={exercises || []} />
     );
-
-
 }
-
-export default Exercices

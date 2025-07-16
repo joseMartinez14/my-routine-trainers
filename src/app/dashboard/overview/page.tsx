@@ -1,14 +1,21 @@
-import { cookies } from "next/headers";
+import React from 'react';
+import { cookies, headers } from "next/headers";
 import OverviewPage from "./OverviewPage";
 import { redirect } from 'next/navigation';
+import type { OverviewStats } from '@/app/api/overview/type';
 
-const queryStats = async () => {
+const queryStats = async (): Promise<OverviewStats | null> => {
     const cookieStore = cookies();
     const cookieHeader = cookieStore.getAll()
         .map(({ name, value }) => `${name}=${value}`)
         .join('; ');
 
-    const res = await fetch(`${process.env.MY_API_URL}/overview`, {
+    // Get the current host from headers
+    const headersList = headers();
+    const host = headersList.get('host') || 'localhost:3000';
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+
+    const res = await fetch(`${protocol}://${host}/api/overview`, {
         method: 'GET',
         headers: {
             'Cookie': cookieHeader,
@@ -18,22 +25,20 @@ const queryStats = async () => {
     });
 
     if (res.ok) {
-        return await res.json();
+        return await res.json() as OverviewStats;
     }
 
     if (res.status === 401) {
         redirect('/home/signin');
     }
-    console.error('Error on Overview page.tsx fetch');
-    console.error(res.status, res.statusText);
+
     return null;
 }
-const Overview = async () => {
+
+export default async function Overview(): Promise<React.JSX.Element> {
     const stats = await queryStats();
 
     return (
         <OverviewPage stats={stats} />
-    )
+    );
 }
-
-export default Overview
